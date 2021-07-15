@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import { useStyles } from './styles';
-import Schedule from '../Schedule/Schedule';
-import Shifts from '../Shifts/Shifts';
-import Msgs from '../Msgs/Msgs';
+import Schedule from '../../components/Schedule/Schedule';
+import Shifts from '../../components/Shifts/Shifts'
+import Msgs from '../../components/Msgs/Msgs'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

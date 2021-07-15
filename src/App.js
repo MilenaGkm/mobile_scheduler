@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import NavigationTabs from './components/Tabs/Tabs';
+import NavigationTabs from './containers/NavigationTabs/NavigationTabs';
 
 function App() {
 
