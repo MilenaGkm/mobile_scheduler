@@ -13,3 +13,10 @@ export function getUserReqShift(userRequestShift) {
         payload: userRequestShift,
     }
 }
+
+export function addToDbSubShift(subShiftForm) {
+    return {
+        type: type.ADD_SUB_SHIFT_REQUESTED,
+        payload: subShiftForm,
+    }
+}

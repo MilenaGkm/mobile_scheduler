@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import requestShifts from './requestShifts';
-import userRequestShift from './requestShifts';
+// import requestShifts from './shifts';
+import userRequestShift from './shifts';
 
 const rootReducer = combineReducers({
-    requestShifts: requestShifts,
+    // requestShifts: requestShifts,
     userRequestShift: userRequestShift,
 });
 

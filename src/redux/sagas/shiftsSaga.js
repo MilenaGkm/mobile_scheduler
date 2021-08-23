@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getReqShifts, getUserReqShift } from '../../services/apiServices';
+import { getReqShifts, getUserReqShift, postSubShiftsApi } from '../../services/apiServices';
 
 function* fetchReqShifts(action) {
    try {
@@ -19,9 +19,19 @@ function* fetchUserReqShift(action) {
    }
 }
 
-function* requestShiftsSaga() {
-   yield takeEvery('GET_REQ_SHIFT_REQUESTED', fetchReqShifts);
-   yield takeEvery('GET_USER_REQ_SHIFT_REQUESTED', fetchUserReqShift);
+function* addSubmitShift(action) {
+   try {
+      yield call(postSubShiftsApi, action.payload);
+      // yield addRequestShift();
+   } catch (e) {
+      yield put({type: 'ADD_SUB_SHIFT_FAILED', message: e.message});
+   }
 }
 
-export default requestShiftsSaga;
+function* shiftsSaga() {
+   yield takeEvery('GET_REQ_SHIFT_REQUESTED', fetchReqShifts);
+   yield takeEvery('GET_USER_REQ_SHIFT_REQUESTED', fetchUserReqShift);
+   yield takeEvery('ADD_SUB_SHIFT_REQUESTED', addSubmitShift);
+}
+
+export default shiftsSaga;

@@ -1,6 +1,7 @@
 
 const reqShiftsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/requested-Shifts` : 'http://localhost:3000/requested-Shifts';
-const usersApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/users` : 'http://localhost:3000/users';
+const subShiftsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/submitted-Shifts` : 'http://localhost:3000/submitted-Shifts';
+// const usersApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/users` : 'http://localhost:3000/users';
 // const msgsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/msgs` : 'http://localhost:3000/msgs';
 
 export function getReqShifts() {
@@ -25,11 +26,11 @@ export function getUserReqShift(userId) {
         .catch((error) => { throw error })
 }
 
-// export function postReqShiftsApi(ReqShiftToAdd) {
-//     const requestOptions = {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(ReqShiftToAdd)
-//     };
-//     return fetch(reqShiftsApi, requestOptions).catch((error) => { throw error })
-// }
+export function postSubShiftsApi(SubShiftToAdd) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(SubShiftToAdd)
+    };
+    return fetch(subShiftsApi, requestOptions).catch((error) => { throw error })
+}

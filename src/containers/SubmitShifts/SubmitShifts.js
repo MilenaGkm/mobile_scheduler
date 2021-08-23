@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux";
-import { getReqShifts, getUserReqShift } from '../../redux/actions/shifts';
+import { getUserReqShift, addToDbSubShift } from '../../redux/actions/shifts';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -58,13 +58,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const RequestShifts = ({ apiRequestShifts, apiUserRequestShift, isLoading, error, fetchRequestShifts, fetchUserRequestShift, addRequestShift }) => {
+const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestShift, addSubmitShift }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [users, setUsers] = useState([{ username: "IronMan", id: "60e5e11658a02d491834e1c6" }, { username: "SpiderMan", id: "60e5e204bc693828f836b65b" }, { username: "JakeDope", id: "60e5e23abc693828f836b65d" }]);
     const [reqShift, setReqShift] = useState({});
     const [subShift, setSubShift] = useState({ userId: "", wantedShifts: 0, comment: "", shifts: [] });
 
+    const updateSubShift = (key, value) => setSubShift({ ...subShift, [key]: value })
+    
     useEffect(() => {
         if (reqShift.shifts) {
             const checkboxes = []
@@ -84,19 +86,14 @@ const RequestShifts = ({ apiRequestShifts, apiUserRequestShift, isLoading, error
 
     useEffect(() => {
         setReqShift(apiUserRequestShift)
+        updateSubShift("wantedShifts", 0);
     }, [apiUserRequestShift])
 
-    const updateSubShift = (key, value) => setSubShift({ ...subShift, [key]: value })
 
 
-    const handleSubmitReqShift = () => {
-        console.log(subShift);
-        //     reqShift.recieversIds = reqShift.recieversIds.map(user => user._id)
-        //     reqShift.dateFrom = dates.from.toLocaleDateString()
-        //     reqShift.dateTo = dates.to.toLocaleDateString()
-        //     reqShift.shifts = checkbox
-        //     addRequestShift(reqShift)
-        //     setOpen(false);
+    const submitShifts = () => {
+        addSubmitShift(subShift)
+        setOpen(false);
     }
 
     const handleCheckboxChange = (e, i) => {
@@ -106,9 +103,9 @@ const RequestShifts = ({ apiRequestShifts, apiUserRequestShift, isLoading, error
         setSubShift(subShift[i] = updateCheckbox)
     };
 
-    const fetchUserShifts = (userId) => {
-        fetchUserRequestShift(userId)
-        updateSubShift("userId", userId)
+    const fetchUserShifts = async (userId) => {
+        await fetchUserRequestShift(userId);
+        updateSubShift("userId", userId);
         setOpen(true);
     };
 
@@ -180,7 +177,7 @@ const RequestShifts = ({ apiRequestShifts, apiUserRequestShift, isLoading, error
                     <Button className="msgBtn" onClick={handleClose} color="primary" >
                         Cancel
                     </Button>
-                    <Button className="msgBtn" onClick={handleSubmitReqShift} color="primary">
+                    <Button className="msgBtn" onClick={submitShifts} color="primary">
                         Send
                     </Button>
                 </DialogActions>
@@ -190,16 +187,14 @@ const RequestShifts = ({ apiRequestShifts, apiUserRequestShift, isLoading, error
 }
 
 const mapStateToProps = (state) => ({
-    apiRequestShifts: state.requestShifts.requestShifts,
-    apiUserRequestShift: state.requestShifts.userRequestShift,
-    isLoading: state.requestShifts.loading,
-    error: state.requestShifts.error
+    apiUserRequestShift: state.userRequestShift.userRequestShift,
+    isLoading: state.userRequestShift.loading,
+    error: state.userRequestShift.error,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchRequestShifts: () => dispatch(getReqShifts()),
     fetchUserRequestShift: (userId) => dispatch(getUserReqShift(userId)),
-    // addRequestShift: (reqShiftForm) => dispatch(addToDbReqShift(reqShiftForm)),
+    addSubmitShift: (subShiftForm) => dispatch(addToDbSubShift(subShiftForm)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RequestShifts);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitShifts);

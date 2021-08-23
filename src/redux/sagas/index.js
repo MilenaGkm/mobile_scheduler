@@ -1,8 +1,8 @@
 import { all } from 'redux-saga/effects'
-import requestShiftsSaga from './requestShiftsSaga'
+import shiftsSaga from './shiftsSaga'
 
 export default function* rootSaga() {
   yield all([
-    requestShiftsSaga(),
+    shiftsSaga(),
   ])
 }
