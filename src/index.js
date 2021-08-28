@@ -4,11 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
@@ -18,7 +20,7 @@ ReactDOM.render(
 // if (process.env.NODE_ENV === 'development') {
 //   serviceWorkerRegistration.unregister()
 // } else {
-  serviceWorkerRegistration.register()
+serviceWorkerRegistration.register()
 // }
 
 // If you want to start measuring performance in your app, pass a function
