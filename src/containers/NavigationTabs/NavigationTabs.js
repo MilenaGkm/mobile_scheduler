@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import { useStyles } from './styles';
-import Schedule from '../../components/Schedule/Schedule';
 import Shifts from '../../components/Shifts/Shifts'
 import Msgs from '../../components/Msgs/Msgs'
+import SubmitShifts from '../SubmitShifts/SubmitShifts';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,7 +63,7 @@ export default function NavigationTabs() {
             </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-                <Schedule />
+                <SubmitShifts />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Shifts />
