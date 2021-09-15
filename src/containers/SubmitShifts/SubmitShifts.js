@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestShift, addSubmitShift }) => {
+const SubmitShifts = ({ apiUserRequestShift, loggedUser, state, isLoading, error, fetchUserRequestShift, addSubmitShift }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [users, setUsers] = useState([{ username: "IronMan", id: "60e5e11658a02d491834e1c6" }, { username: "SpiderMan", id: "60e5e204bc693828f836b65b" }, { username: "JakeDope", id: "60e5e23abc693828f836b65d" }]);
@@ -116,6 +116,8 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
     const handleClose = () => {
         setOpen(false);
     };
+
+    console.log(loggedUser);
 
     return (
         <div>
@@ -187,9 +189,11 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
 }
 
 const mapStateToProps = (state) => ({
+    loggedUser: state.loggedUser.loggedUser._doc,
     apiUserRequestShift: state.userRequestShift.userRequestShift,
     isLoading: state.userRequestShift.loading,
     error: state.userRequestShift.error,
+    state: state,
 })
 
 const mapDispatchToProps = (dispatch) => ({
