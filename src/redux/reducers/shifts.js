@@ -2,6 +2,7 @@ import * as type from '../types';
 
 const initialState = {
     // requestShifts: [],
+    // loggedUser: {},
     userRequestShift: {},
     loading: false,
     error: null,
