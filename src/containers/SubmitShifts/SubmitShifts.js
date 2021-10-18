@@ -58,15 +58,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestShift, addSubmitShift }) => {
+const SubmitShifts = ({ apiUserRequestShift, loggedUser, state, isLoading, error, fetchUserRequestShift, addSubmitShift }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [users, setUsers] = useState([{ username: "IronMan", id: "60e5e11658a02d491834e1c6" }, { username: "SpiderMan", id: "60e5e204bc693828f836b65b" }, { username: "JakeDope", id: "60e5e23abc693828f836b65d" }]);
     const [reqShift, setReqShift] = useState({});
     const [subShift, setSubShift] = useState({ userId: "", wantedShifts: 0, comment: "", shifts: [] });
 
     const updateSubShift = (key, value) => setSubShift({ ...subShift, [key]: value })
-    
+
     useEffect(() => {
         if (reqShift.shifts) {
             const checkboxes = []
@@ -89,7 +88,10 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
         updateSubShift("wantedShifts", 0);
     }, [apiUserRequestShift])
 
-
+    useEffect(() => {
+        fetchUserRequestShift(loggedUser._id);
+        updateSubShift("userId", loggedUser._id);
+    }, [loggedUser])
 
     const submitShifts = () => {
         addSubmitShift(subShift)
@@ -103,12 +105,6 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
         setSubShift(subShift[i] = updateCheckbox)
     };
 
-    const fetchUserShifts = async (userId) => {
-        await fetchUserRequestShift(userId);
-        updateSubShift("userId", userId);
-        setOpen(true);
-    };
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -119,14 +115,6 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
 
     return (
         <div>
-            {users.map((user, i) => {
-                return (
-                    <Button key={i} variant="outlined" color="primary" onClick={() => fetchUserShifts(user.id)}>
-                        {user.username}
-                    </Button>
-                )
-            })}
-            <br />
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 New Shift Req
             </Button>
@@ -187,9 +175,11 @@ const SubmitShifts = ({ apiUserRequestShift, isLoading, error, fetchUserRequestS
 }
 
 const mapStateToProps = (state) => ({
+    loggedUser: state.loggedUser.loggedUser._doc,
     apiUserRequestShift: state.userRequestShift.userRequestShift,
     isLoading: state.userRequestShift.loading,
     error: state.userRequestShift.error,
+    state: state,
 })
 
 const mapDispatchToProps = (dispatch) => ({
