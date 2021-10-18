@@ -73,34 +73,11 @@ const Login = ({ loggedUser, isLoading, error, state, fetchUser, addSubmitShift 
         await fetchUser(user)
     }
 
-    useEffect(() => {
-
-    }, [loggedUser._doc])
-
     if (loggedUser._doc) {
-        // setTimeout(() => {
-        //     setRedirect(false)
-            return (
-
-                <Redirect to="/dashboard" />
-            )
-        // }, 3000);
-        // return (
-        //     <div>
-        //         <Backdrop open={redirect} >
-        //             <CircularProgress color="inherit" />
-        //         </Backdrop>
-        //     </div>
-        // )
-        // <Redirect
-        //     to={{
-        //         pathname: "/dashboard",
-        //         // search: "?utm=your+face",
-        //         state: { user: loggedUser }
-        //     }}
-        // />
+        return (
+            <Redirect to="/dashboard" />
+        )
     } else {
-
         return (
             <div>
                 <input onChange={e => handleUserInputs(e.target.name, e.target.value)}
