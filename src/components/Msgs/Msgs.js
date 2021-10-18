@@ -84,8 +84,9 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, loggedUser, fetchMsgs, fetc
         setExpanded(expand)
     }
 
-    const handleDeleteMsg = (msg) => {
-        deleteMsg(msg)
+    const handleDeleteMsg = async (msg) => {
+        await deleteMsg(msg)
+        await fetchMsgs(loggedUser._id)
     }
 
     return (
