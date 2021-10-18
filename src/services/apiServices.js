@@ -3,7 +3,7 @@ const reqShiftsApi = process.env.NODE_ENV == "production" ? `https://shift-publi
 const subShiftsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/submitted-Shifts` : 'http://localhost:3000/submitted-Shifts';
 const loginApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/auth/login` : 'http://localhost:3000/auth/login';
 // const usersApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/users` : 'http://localhost:3000/users';
-// const msgsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/msgs` : 'http://localhost:3000/msgs';
+const msgsApi = process.env.NODE_ENV == "production" ? `https://shift-publisher-nest.herokuapp.com/msgs` : 'http://localhost:3000/msgs';
 
 export function getReqShifts() {
     return fetch(reqShiftsApi, {
@@ -45,4 +45,27 @@ export function getLoggedUserApi(loggedUser) {
     };
     // console.log(requestOptions);
     return fetch(loginApi, requestOptions).then(response => response.json()).catch((error) => { throw error })
+}
+
+export function getMsgsApi(userId) {
+    return fetch(`${msgsApi}/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+
+        }
+    }).then(response => response.json())
+        .catch((error) => { throw error })
+}
+
+
+export function deleteMsgApi(msgToDelete) {
+    return fetch(`${msgsApi}/${msgToDelete}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+
+        }
+    }).then(response => response.json())
+        .catch((error) => { throw error })
 }
