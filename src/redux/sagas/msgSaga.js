@@ -13,7 +13,7 @@ function* fetchMsgs(action) {
 function* deleteMsg(action) {
    try {
       yield call(deleteMsgApi, action.payload);
-      yield fetchMsgs();
+      // yield fetchMsgs();
    } catch (e) {
       yield put({type: 'DELETE_MSG_FAILED', message: e.message});
    }

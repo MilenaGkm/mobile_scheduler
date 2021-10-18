@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { getMsgs, addToDbMsg, deleteMsgFromDb } from '../../redux/actions/msgs';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,68 +16,103 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
+    root: {
+        maxWidth: 200,
+        margin: '20px',
+        order: '0',
+        flex: '0 1 auto',
+        alignSelf: 'auto',
+        borderRadius: '8px'
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: red[500],
+    },
+    flexContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        height: '800px',
+        justifyContent: 'flex-start',
+        alignContent: 'flex-start',
+        // margin : '20px'
+        // alignItems: 'center',
+        // listStyle: 'none',
+        // padding: theme.spacing(0.5),
+        // Height: '500px'
+    },
 }));
 
 const Msgs = ({ apiMsgs, apiUsers, isLoading, error, loggedUser, fetchMsgs, fetchUsers, addMsg, deleteMsg }) => {
-  const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
-  const [msgs, setMsgs] = useState([]);
+    const classes = useStyles();
+    const [expanded, setExpanded] = useState([]);
+    const [msgs, setMsgs] = useState([]);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+    useEffect(() => {
+        fetchMsgs(loggedUser._id)
+    }, [])
 
-  useEffect(() => {
-    fetchMsgs(loggedUser._id)
-}, [])
-  console.log(loggedUser);
-  console.log(apiMsgs);
+    useEffect(() => {
+        let newExpanded = []
+        for (let i = 0; i < apiMsgs.length; i++) {
+            newExpanded.push(true)
+        }
+        setExpanded(newExpanded)
+    }, [apiMsgs])
 
-  return (
-    <Card className={classes.root}>
-      <CardHeader
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardContent>
-        <Typography noWrap={expanded} variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton onClick={handleExpandClick} aria-label="show more">
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
-  );
+    const handleExpandClick = (i) => {
+        console.log(i);
+        let expand = [...expanded]
+        expand[i] = !expand[i]
+        setExpanded(expand)
+    }
+
+    const handleDeleteMsg = (msg) => {
+        deleteMsg(msg)
+    }
+
+    return (
+        <div className={classes.flexContainer}>
+            {apiMsgs.map((msg, i) => (
+                <Card key={i} className={classes.root}>
+                    <CardHeader
+                        title={msg.subject}
+                        subheader={msg.date}
+                    />
+                    <CardContent>
+                        <Typography className="msgBody" noWrap={expanded[i]} variant="body2" color="textSecondary" component="p">
+                            {msg.body}
+                        </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                        <IconButton aria-label="delete" onClick={() => handleDeleteMsg(msg._id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleExpandClick(i)} aria-label="show more">
+                            <ExpandMoreIcon />
+                        </IconButton>
+                    </CardActions>
+                </Card>
+            ))}
+        </div>
+    );
 }
 
 
